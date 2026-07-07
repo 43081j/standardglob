@@ -1,0 +1,20 @@
+{
+  "name": "standardglob",
+  "version": "0.0.0-dev",
+  "private": true,
+  "description": "A set of standards for glob implementations.",
+  "type": "module",
+  "author": "James Garbutt (https://github.com/43081j)",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://github.com/43081j/standardglob#readme",
+  "bugs": {
+    "url": "https://github.com/43081j/standardglob/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/43081j/standardglob.git"
+  }
+}

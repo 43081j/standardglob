@@ -1,0 +1,22 @@
+{
+  "description": "The ? wildcard: matches exactly one character within a single path segment (does not cross /).",
+  "tests": [
+    {
+      "pattern": "a?c",
+      "cases": [
+        { "input": "abc", "match": true },
+        { "input": "axc", "match": true },
+        { "input": "ac", "match": false },
+        { "input": "abbc", "match": false },
+        { "input": "a/c", "match": false }
+      ]
+    },
+    {
+      "pattern": "src/?.ts",
+      "cases": [
+        { "input": "src/a.ts", "match": true },
+        { "input": "src/ab.ts", "match": false }
+      ]
+    }
+  ]
+}

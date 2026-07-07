@@ -1,0 +1,23 @@
+{
+  "description": "Character classes [...]: match a single character from a set or range.",
+  "tests": [
+    {
+      "pattern": "file.[tj]s",
+      "cases": [
+        { "input": "file.ts", "match": true },
+        { "input": "file.js", "match": true },
+        { "input": "file.xs", "match": false },
+        { "input": "file.tjs", "match": false }
+      ]
+    },
+    {
+      "pattern": "[a-z].ts",
+      "cases": [
+        { "input": "a.ts", "match": true },
+        { "input": "z.ts", "match": true },
+        { "input": "A.ts", "match": false },
+        { "input": "1.ts", "match": false }
+      ]
+    }
+  ]
+}

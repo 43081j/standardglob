@@ -1,0 +1,24 @@
+{
+  "description": "The ** wildcard: matches any number of path segments, including zero.",
+  "tests": [
+    {
+      "pattern": "src/**/*.ts",
+      "cases": [
+        { "input": "src/index.ts", "match": true },
+        { "input": "src/a/b.ts", "match": true },
+        { "input": "src/a/b/c.ts", "match": true },
+        { "input": "src/index.js", "match": false },
+        { "input": "index.ts", "match": false }
+      ]
+    },
+    {
+      "pattern": "**/*.ts",
+      "cases": [
+        { "input": "a.ts", "match": true },
+        { "input": "src/a.ts", "match": true },
+        { "input": "src/nested/a.ts", "match": true },
+        { "input": "a.js", "match": false }
+      ]
+    }
+  ]
+}

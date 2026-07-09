@@ -1,0 +1,9 @@
+[tools]
+# cargo-binstall = "1.20.1"		# (only used to install tracey)
+# https://tracey.bearcove.eu/
+# "cargo:tracey" = "2.0.0" # 2.0.0[-rc] is not released yet, so we have to build from source for now
+"cargo:https://github.com/bearcove/tracey" = { version = "rev:7494469c454ea3e93203f2cc860adbf153fe64b9", crate = "tracey" }
+# for compiling tracey, until 2.0 is released
+node = "26"
+# for compiling tracey, until 2.0 is released
+rust = "1.98.0-beta.1"

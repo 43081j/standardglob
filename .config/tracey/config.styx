@@ -1,0 +1,20 @@
+@schema {id crate:tracey-config@1, cli tracey}
+
+specs (
+    {
+        name glob
+        include (
+					specs/base.md
+					specs/base/*.md
+        )
+        impls (
+            {
+                name test-suite
+                include (
+                    tests/**/*.yml
+                    tests/**/*.json
+                )
+            }
+        )
+    }
+)

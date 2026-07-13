@@ -1,0 +1,46 @@
+name: Static Pattern
+
+tests:
+  - name: "src/index.ts matches the exact path only"
+    pattern: "src/index.ts"
+    matches:
+      - "src/index.ts"
+    rejects:
+      - "src/index.js" # wrong extension
+      - "src/index.ts/x" # trailing segment
+      - "index.ts" # missing src/ prefix
+      - "src/Index.ts" # matching is case-sensitive
+      - "src/index.tsx" # extra character in extension
+      - "src//index.ts" # empty segment
+      - "asrc/index.ts" # not anchored at start
+
+  - name: "index.ts matches a single top-level segment"
+    pattern: "index.ts"
+    matches:
+      - "index.ts"
+    rejects:
+      - "src/index.ts" # extra leading segment
+      - "index.ts/x" # trailing segment
+      - "index_ts" # dot is a literal, not a wildcard
+      - "indexXts" # dot must match a dot
+      - "index.tsx" # not anchored at end
+
+  - name: "a.b.c treats every dot as a literal character"
+    pattern: "a.b.c"
+    matches:
+      - "a.b.c"
+    rejects:
+      - "axbxc" # dots are literal, not wildcards
+      - "a.b.c.d" # trailing segment
+      - "a.b" # too short
+      - "aXb.c" # first dot must match a dot
+
+  - name: "deep/nested/path/file.txt matches the full literal path"
+    pattern: "deep/nested/path/file.txt"
+    matches:
+      - "deep/nested/path/file.txt"
+    rejects:
+      - "deep/nested/file.txt" # missing middle segment
+      - "deep/nested/path/file.txt/x" # trailing segment
+      - "nested/path/file.txt" # missing leading segment
+      - "deep/nested/path/file.txt " # trailing whitespace is significant

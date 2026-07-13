@@ -2,15 +2,16 @@
 
 ## Keywords
 
-- `MUST`
-- `MAY`
-- `SHOULD`
+- `MUST`: implementation is required to follow requirement
+- `SHOULD`: implementation is not required but encouraged to follow requirement _(use `MUST` or `MAY` instead)_
+- `MAY`: implementation is not required to follow requirement, but must not implement contradicting functionality
 - `PENDING DECISION`: there is an open issue for discussing this requirement
 - `CANDIDATE`: indicates that the requirement should possibly be moved to or changed in a specification extension
 - `LOOSENED BY {link}`: the requirement is loosened in a specification extension
 - `MODIFIED BY {link}`: the requirement is modified in a specification extension
 
 Prior art:
+
 - [https://man7.org/linux/man-pages/man7/glob.7.html](https://man7.org/linux/man-pages/man7/glob.7.html)
 - [https://man7.org/linux/man-pages/man3/glob.3.html](https://man7.org/linux/man-pages/man7/glob.7.html)
 
@@ -47,7 +48,7 @@ The forward slash character (`/`) is the recognized path segment separator.
 > A Pattern MUST NOT contain any Windows-style path separators (`\`).
 >
 > The backslash character is instead used for escaping (see
-> [Escaping](#escaping)).
+> [Escaping](#base-glob-pattern-specification--glob-pattern--escaping)).
 >
 > PENDING DECISION [#5](https://github.com/43081j/standardglob/issues/5)
 
@@ -81,7 +82,7 @@ glob[pattern.drill-wildcard.mixed-characters-segment]
 `**` MUST be treated as `*` if there are other characters in the Segment.
 
 glob[pattern.drill-wildcard.extra-stars]
-Any extra stars immediately following `**` (e.g. `***`, `******`) MUST be ignored. (TODO: check how this should behave)
+Any extra stars immediately following `**` (e.g. `***`, `******`) MUST collapse into a single `*`. (TODO: check how this should behave)
 
 glob[pattern.drill-wildcard.no-files]
 `**` MUST NOT match any files.
@@ -95,7 +96,7 @@ References:
 ### Single Wildcard (`?`)
 
 glob[pattern.single-wildcard]
-`?` MUST match any single character.
+`?` MUST match any single character, EXCEPT path separators.
 
 References:
 

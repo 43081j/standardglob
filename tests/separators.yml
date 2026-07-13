@@ -1,15 +1,7 @@
-name: Path Separators
+name: Path Separator (/)
 
 tests:
-  # glob[pattern.separator.no-windows-slashes]
-  - name: no-windows-separators
-    globs:
-      - "src\\index.js"
-    paths:
-      - "src/foo/index.js"
-      - "src\\foo\\index.js"
-      - "C:/dev/src/index.js"
-      - "C:\\dev\\src\\index.js"
-    # requires one of `error` or `match` to be defined
-    error: EWINSEP # or a message, or just `true`
-    match: false
+  # glob[verify pattern.separator.no-windows-slashes]
+  - name: rejects windows separator
+    pattern: "src\\index.js"
+    error: WINSEP # error codes?

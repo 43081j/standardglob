@@ -1,0 +1,96 @@
+name: Wildcard (*)
+
+tests:
+  # glob[verify pattern.wildcard]
+  - name: "src/*.ts matches .ts files directly under src"
+    pattern: "src/*.ts"
+    matches:
+      - "src/index.ts"
+      - "src/a.ts"
+      - "src/.ts" # * matches empty string
+      - "src/a.b.ts" # * matches dots within a segment
+    rejects:
+      - "src/index.js" # wrong extension
+      - "src/a/b.ts" # too deep
+      - "index.ts" # missing src/ prefix
+      - "src/index.ts/x" # trailing segment
+      - "xsrc/index.ts" # prefix not anchored
+      - "src/index.tsx" # suffix not anchored
+
+  # glob[verify pattern.wildcard]
+  - name: "* matches any single-segment name but never crosses separators"
+    pattern: "*"
+    matches:
+      - "a"
+      - "abc"
+      - "a.ts"
+      - "a b c"
+      - "UPPER"
+    rejects:
+      - "a/b"
+      - "a/b/c"
+      - "/a"
+
+  # hidden files option
+  # glob[verify pattern.wildcard]
+  # - name: "* does not match hidden files"
+  #   globs:
+  #     - "*"
+  #   rejects:
+  #     - ".gitignore"
+
+  # glob[verify pattern.wildcard]
+  - name: "*.ts matches .ts files in root only"
+    pattern: "*.ts"
+    matches:
+      - "a.ts"
+      - ".ts" # * matches empty
+      - "a.b.ts" # multiple dots
+    rejects:
+      - "a.js"
+      - "a/b.ts"
+      - "ats" # missing dot
+      - "a.ts.bak" # extension not at end
+      - "a.TS" # case-sensitive (remove if matching is case-insensitive)
+
+  # glob[verify pattern.wildcard]
+  - name: "a*c matches zero or more middle characters, anchored, no separators"
+    pattern: "a*c"
+    matches:
+      - "ac" # zero characters
+      - "abc"
+      - "abbbc"
+      - "ab{aa}bc" # braces are literal inside the match
+      - "ab.bc" # dot is literal, not regex
+      - "ab*c" # literal * in path
+      - "a c" # space
+    rejects:
+      - "abcd" # trailing overflow
+      - "xabc" # leading overflow
+      - "a/c" # * must not match /
+      - "ab/bc" # * must not match /
+      - "a" # incomplete
+      - "c" # incomplete
+
+  # glob[verify pattern.wildcard]
+  - name: "a*b*c matches with independent gaps and backtracking"
+    pattern: "a*b*c"
+    matches:
+      - "abc"
+      - "aXbYc"
+      - "aXXbc"
+      - "abbc" # backtracking: first b vs second b
+    rejects:
+      - "acb"
+      - "aXc"
+      - "aXbYc/z"
+
+  # glob[verify pattern.wildcard]
+  - name: "src/*/index.ts matches exactly one intermediate directory"
+    pattern: "src/*/index.ts"
+    matches:
+      - "src/app/index.ts"
+      - "src/a.b/index.ts"
+    rejects:
+      - "src/index.ts" # zero directories — * needs a segment
+      - "src/a/b/index.ts" # two directories

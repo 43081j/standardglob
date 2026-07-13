@@ -1,0 +1,104 @@
+name: Drill Wildcard (**)
+
+tests:
+  # glob[verify pattern.drill-wildcard]
+  - name: "src/**/*.ts matches zero or more directories between src and the file"
+    pattern: "src/**/*.ts"
+    matches:
+      - "src/index.ts" # ** matches zero segments
+      - "src/a/b.ts" # one directory
+      - "src/a/b/c.ts" # two directories
+      - "src/a/b/c/d/e.ts" # arbitrary depth
+    rejects:
+      - "src/index.js" # wrong extension
+      - "index.ts" # missing src/ prefix
+      - "asrc/index.ts" # not anchored at start
+      - "src/a/b.ts/x" # trailing segment not covered by the pattern
+
+  # glob[verify pattern.drill-wildcard]
+  - name: "**/*.ts matches .ts files at any depth including the root"
+    pattern: "**/*.ts"
+    matches:
+      - "a.ts" # ** matches zero segments, no leading separator required
+      - "src/a.ts"
+      - "src/nested/deep/a.ts"
+    rejects:
+      - "a.js" # wrong extension
+      - "a.ts/x" # trailing segment
+      - "src/a.ts.bak" # not anchored at end
+
+  # glob[verify pattern.drill-wildcard]
+  - name: "a/**/z spans any number of separators when alone in a segment"
+    pattern: "a/**/z"
+    matches:
+      - "a/z" # zero segments
+      - "a/b/z"
+      - "a/b/c/d/z"
+      - "a/b.c/z" # dots inside spanned segments are fine
+    rejects:
+      - "az" # ** does not merge adjacent literal segments
+      - "a/b" # missing trailing z
+      - "b/a/z" # not anchored at start
+      - "a/z/b" # not anchored at end
+
+  # glob[verify pattern.drill-wildcard.mixed-characters-segment]
+  - name: "a**b degrades to a*b when ** shares a segment with other characters"
+    pattern: "a**b"
+    matches:
+      - "ab" # * may match empty
+      - "axb"
+      - "axyzb"
+    rejects:
+      - "a/b" # degraded * must not cross a separator
+      - "a/x/b" # no multi-segment spanning
+      - "axb/c" # trailing segment
+
+  # glob[verify pattern.drill-wildcard.mixed-characters-segment]
+  - name: "src/**x/*.ts degrades **x to *x, matching a single segment"
+    pattern: "src/**x/*.ts"
+    matches:
+      - "src/x/a.ts" # * matches empty before x
+      - "src/abx/a.ts"
+    rejects:
+      - "src/a/bx/c.ts" # **x must stay within one segment
+      - "src/xa/a.ts" # segment must end with x
+      - "src/x/a/b.ts" # extra directory not covered
+
+  # glob[verify pattern.drill-wildcard.extra-stars]
+  - name: "src/***/*.ts collapses *** to a single *, matching exactly one segment"
+    pattern: "src/***/*.ts"
+    matches:
+      - "src/a/b.ts" # single directory, like src/*/*.ts
+      - "src/xyz/b.ts"
+    rejects:
+      - "src/a.ts" # collapsed * requires exactly one segment, not zero
+      - "src/a/b/c.ts" # collapsed * must not span multiple segments
+      - "src/a/b.js" # wrong extension
+      - "index.ts" # missing src/ prefix
+
+  # glob[verify pattern.drill-wildcard.extra-stars]
+  - name: "a/******/z collapses all extra stars into a single *"
+    pattern: "a/******/z"
+    matches:
+      - "a/b/z" # single segment
+      - "a/xyz/z"
+    rejects:
+      - "a/z" # collapsed * does not match zero segments
+      - "a/b/c/z" # collapsed * must not span separators
+      - "a/b" # missing trailing z
+
+  # glob[verify pattern.drill-wildcard.no-files]
+  - name: "trailing src/** never matches file paths"
+    pattern: "src/**"
+    rejects:
+      - "src/a.ts" # ** must not match files
+      - "src/a/b.ts" # regardless of depth
+      - "src" # ** consumes nothing but src itself is a file here
+
+  # glob[verify pattern.drill-wildcard.no-files]
+  - name: "bare ** never matches file paths"
+    pattern: "**"
+    rejects:
+      - "a.ts" # ** must not match files
+      - "src/a.ts"
+      - "src/nested/a.ts"

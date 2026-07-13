@@ -16,38 +16,30 @@
 				"type": "object",
 				"required": [
 					"name",
-					"globs",
-					"paths"
+					"pattern"
 				],
 				"properties": {
 					"name": {
 						"type": "string",
 						"minLength": 3
 					},
-					"globs": {
+					"pattern": {
+						"type": "string"
+					},
+					"matches": {
 						"type": "array",
 						"items": {
 							"type": "string"
 						}
 					},
-					"paths": {
+					"rejects": {
 						"type": "array",
 						"items": {
 							"type": "string"
 						}
 					},
 					"error": {
-						"oneOf": [
-							{
-								"type": "string"
-							},
-							{
-								"type": "null"
-							}
-						]
-					},
-					"match": {
-						"type": "boolean"
+						"type": "string"
 					}
 				}
 			}

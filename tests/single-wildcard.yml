@@ -1,0 +1,95 @@
+name: Single Wildcard (?)
+
+tests:
+  # glob[verify pattern.single-wildcard]
+  - name: "a?c matches exactly one character in the middle"
+    pattern: "a?c"
+    matches:
+      - "abc"
+      - "axc"
+      - "a1c"
+      - "a.c" # dot is a regular character
+      - "a{c" # brace is literal when not part of expansion
+      - "a c" # space
+      - "a?c" # literal ? in path
+    rejects:
+      - "ac" # ? must consume exactly one char, not zero
+      - "abbc" # too many characters
+      - "a/c" # ? must not match separator
+      - "xyzabc" # not anchored at start
+      - "abcx" # not anchored at end
+
+  # glob[verify pattern.single-wildcard]
+  - name: "?bc matches one character at start"
+    pattern: "?bc"
+    matches:
+      - "xbc"
+    rejects:
+      - "bc" # ? at start needs a char
+      - "ab" # ? at end needs a char
+      - "xxbc" # too long for ?bc
+      - "a/c" # separator never matched
+
+  # glob[verify pattern.single-wildcard]
+  - name: "ab? match one character at end"
+    pattern: "ab?"
+    matches:
+      - "abx"
+    rejects:
+      - "bc" # ? at start needs a char
+      - "ab" # ? at end needs a char
+      - "xxbc" # too long for ?bc
+      - "a/c" # separator never matched
+
+  # glob[verify pattern.single-wildcard]
+  - name: "a??c requires exactly two characters"
+    pattern: "a??c"
+    matches:
+      - "abbc"
+      - "a12c"
+      - "a..c"
+    rejects:
+      - "ac" # zero chars
+      - "abc" # one char
+      - "abbbc" # three chars
+      - "ab/c" # separator not matched by ?
+
+  # glob[verify pattern.single-wildcard]
+  - name: "src/?.ts matches single-character filenames under src"
+    pattern: "src/?.ts"
+    matches:
+      - "src/a.ts"
+      - "src/1.ts"
+      - "src/_.ts"
+    rejects:
+      - "src/.ts" # zero chars — ? is not optional
+      - "src/ab.ts" # two chars
+      - "src/za.ts" # two chars
+      - "src/zab.ts" # three chars
+      - "src/a.js" # wrong extension
+      - "a.ts" # missing src/ prefix
+      - "src/a.ts/x" # trailing segment
+      - "src/a/b.ts" # ? must not span a separator
+
+  # glob[verify pattern.single-wildcard]
+  - name: "a/?/c matches exactly one single-character directory"
+    pattern: "a/?/c"
+    matches:
+      - "a/b/c"
+      - "a/x/c"
+      - "a/./c" # remove if paths are normalized before matching
+    rejects:
+      - "a//c" # empty segment
+      - "a/bb/c" # two chars
+      - "a/b/x/c" # extra segment
+      - "a/c" # missing segment
+
+  # glob[verify pattern.single-wildcard]
+  - name: "?*.ts requires at least one character before the extension"
+    pattern: "?*.ts"
+    matches:
+      - "a.ts" # ? takes 'a', * matches empty
+      - "abc.ts"
+    rejects:
+      - ".ts" # ? guarantees a minimum length of one
+      - "a/b.ts" # nested

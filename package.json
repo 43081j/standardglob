@@ -16,6 +16,5 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/43081j/standardglob.git"
-  },
-  "packageManager": "pnpm@11.10.0"
+  }
 }

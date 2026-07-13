@@ -5,6 +5,7 @@
 # "cargo:https://github.com/bearcove/tracey" = { version = "rev:7494469c454ea3e93203f2cc860adbf153fe64b9", crate = "tracey" }
 # for compiling tracey, until 2.0 is released
 node = "26"
+pnpm = "11.11.0"
 # for compiling tracey, until 2.0 is released
 rust = { version = "1.98.0-beta.1", profile = "minimal" }
 

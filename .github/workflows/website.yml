@@ -37,10 +37,10 @@ jobs:
         uses: Swatinem/rust-cache@c19371144df3bb44fab255c43d04cbc2ab54d1c4 # v2.9.1
 
       - name: Build tracey
-        run: cargo install --git https://github.com/bearcove/tracey --rev 7494469c454ea3e93203f2cc860adbf153fe64b9 tracey
+        run: mise task run tracey:install
 
       - name: Build website
-        run: mise task run build-website
+        run: mise task run tracey:export
 
       - name: Upload website artifacts
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1

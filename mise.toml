@@ -6,4 +6,10 @@
 # for compiling tracey, until 2.0 is released
 node = "26"
 # for compiling tracey, until 2.0 is released
-rust = "1.98.0-beta.1"
+rust = { version = "1.98.0-beta.1", profile = "minimal" }
+
+[settings]
+auto_install = false
+
+[tasks]
+build-website = "tracey export dist/website"

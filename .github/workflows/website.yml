@@ -1,0 +1,75 @@
+name: changesets
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .config/tracey/*
+      - specs/**
+      - tests/**/*.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: website-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-website:
+    runs-on: ubuntu-24.04-arm
+
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - name: Install dependencies
+        uses: jdx/mise-action@e6a8b3978addb5a52f2b4cd9d91eafa7f0ab959d # v4.2.0
+        with:
+          version: 2026.7.5
+          install: true
+          cache: true
+          # experimental: true
+
+      - name: Rust cache
+        uses: Swatinem/rust-cache@c19371144df3bb44fab255c43d04cbc2ab54d1c4 # v2.9.1
+
+      - name: Build tracey
+        run: cargo install --git https://github.com/bearcove/tracey --rev 7494469c454ea3e93203f2cc860adbf153fe64b9 tracey
+
+      - name: Build website
+        run: mise task run build-website
+
+      - name: Upload website artifacts
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: website
+          path: dist/website
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 9
+
+  # Deploy job
+  deploy:
+    needs: build-website
+    runs-on: ubuntu-24.04-arm
+
+    permissions:
+      pages: write # to deploy to Pages
+      id-token: write # to verify the deployment originates from an app
+
+    # Deploy to the github-pages environment
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5.0.0
+        with:
+          artifact_name: website
+          timeout: 60000
+

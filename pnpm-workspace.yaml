@@ -1,0 +1,16 @@
+packages:
+  - tests/js
+
+dedupePeers: true
+dedupePeerDependents: true
+
+minimumReleaseAge: 4320
+
+overrides:
+  lightningcss: "-"
+  postcss: "-"
+
+savePrefix: ""
+shellEmulator: true
+
+trustPolicy: no-downgrade

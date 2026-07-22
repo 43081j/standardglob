@@ -1,0 +1,18 @@
+{
+	"name": "@globstandard/tests",
+	"type": "module",
+	"private": true,
+	"scripts": {
+		"test": "vitest"
+	},
+	"devDependencies": {
+		"@tsconfig/node24": "24.0.4",
+		"@tsconfig/strictest": "2.0.8",
+		"@types/node": "26.1.1",
+		"@types/picomatch": "4.0.3",
+		"picomatch": "4.0.5",
+		"vitest": "5.0.0-beta.6",
+		"yaml": "3.0.0-1",
+		"zeptomatch": "2.1.0"
+	}
+}

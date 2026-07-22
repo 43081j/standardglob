@@ -1,0 +1,21 @@
+{
+  "extends": ["@tsconfig/node24/tsconfig.json", "@tsconfig/strictest/tsconfig.json"],
+  "compilerOptions": {
+    // Output
+    "noEmit": true,
+
+    // Modules
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "resolveJsonModule": true,
+
+    // Lessen strictness
+    "noImplicitReturns": false,
+    "noPropertyAccessFromIndexSignature": false,
+    "exactOptionalPropertyTypes": false,
+
+    // Extra types
+    "types": ["node"]
+  },
+	"include": ["./"]
+}

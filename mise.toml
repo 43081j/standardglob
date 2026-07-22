@@ -13,5 +13,5 @@ rust = { version = "1.98.0-beta.1", profile = "minimal" }
 auto_install = false
 
 [tasks]
-"tracey:install" = "cargo install --git https://github.com/bearcove/tracey --rev 7494469c454ea3e93203f2cc860adbf153fe64b9 tracey"
-"tracey:export" = "tracey export dist/website"
+"tracey:install" = "cargo install --git https://github.com/beeequeue/tracey --rev 48e9a3af8bb757a6083e2ff4c6973cc0ccce90f6 tracey"
+"tracey:export" = "tracey export --public-path /standardglob/ dist/website"

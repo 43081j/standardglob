@@ -3,6 +3,22 @@
   <component name="JsonSchemaMappingsProjectConfiguration">
     <state>
       <map>
+        <entry key="GitHub Workflow">
+          <value>
+            <SchemaInfo>
+              <option name="name" value="GitHub Workflow" />
+              <option name="relativePathToSchema" value="https://www.schemastore.org/github-workflow.json" />
+              <option name="applicationDefined" value="true" />
+              <option name="patterns">
+                <list>
+                  <Item>
+                    <option name="path" value=".github/workflows/*.yml" />
+                  </Item>
+                </list>
+              </option>
+            </SchemaInfo>
+          </value>
+        </entry>
         <entry key="Tests">
           <value>
             <SchemaInfo>
@@ -16,6 +32,22 @@
                     <option name="pattern" value="true" />
                     <option name="path" value="tests/**.yml" />
                     <option name="mappingKind" value="Pattern" />
+                  </Item>
+                </list>
+              </option>
+            </SchemaInfo>
+          </value>
+        </entry>
+        <entry key="mise">
+          <value>
+            <SchemaInfo>
+              <option name="name" value="mise" />
+              <option name="relativePathToSchema" value="https://mise.jdx.dev/schema/mise.json" />
+              <option name="applicationDefined" value="true" />
+              <option name="patterns">
+                <list>
+                  <Item>
+                    <option name="path" value="mise.toml" />
                   </Item>
                 </list>
               </option>
